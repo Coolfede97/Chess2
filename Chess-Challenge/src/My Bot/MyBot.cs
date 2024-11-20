@@ -5,34 +5,46 @@ using ChessChallenge.API;
 
 public class MyBot : IChessBot
 {
-    public Move Think(Board board, Timer timer)
-    {
-        Move[] moves = board.GetLegalMoves();
-        Candidate candidate = new Candidate(Move.NullMove,-1104);
-        foreach (Move move in moves)
+        public Move Think(Board board, Timer timer)
         {
-            board.MakeMove(move);
-            PieceList piecesA;
-            PieceList piecesB;
-            
-            PieceList localPieceList = board.GetPieceList(PieceType.None, )
+            bool IamWhite;
+            if (board.IsWhiteToMove) IamWhite=true;
+            else IamWhite=false;
+            Move[] moves = board.GetLegalMoves();
+            Candidate candidate = new Candidate(Move.NullMove,-1104);
+            foreach (Move move in moves)
+            {
+                board.MakeMove(move);
+                List<Piece> piecesA=GetAllPieces(board,IamWhite==true);
+                List<Piece> piecesB=GetAllPieces(board,!IamWhite==true);
+                int materialWonOnMove = MaterialDifference(piecesA, piecesB);
+                if (materialWonOnMove>candidate.materialWon)
+                {
+                    candidate = new Candidate(move,materialWonOnMove);
+                }
+            }
+            return candidate.movement;
         }
 
-        public PieceList GetAllPieces(Board board, bool whiteTeam)
+        public List<Piece> GetAllPieces(Board board, bool whiteTeam)
         {
-            PieceList localList;
+            List<Piece> localList = new List<Piece>();;
             foreach (PieceType pieceType in Enum.GetValues<PieceType>())
             {
-                PieceList localPieceList = board.GetPieceList(pieceType, whiteTeam);
-                foreach (Piece piece in localPieceList) localList.Append(piece)
+                if (pieceType!= PieceType.None)
+                {
+                    PieceList localPieceList = board.GetPieceList(pieceType, whiteTeam);
+                    foreach (Piece piece in localPieceList) localList.Add(piece);
+                }
             }
+            return localList;
         }
-        public int MaterialDifference(PieceList piecesA, PieceList piecesB)
+        public int MaterialDifference(List<Piece> piecesA, List<Piece> piecesB)
         {
             int materialA = CalculateMaterial(piecesA);
             int materialB = CalculateMaterial(piecesB);
 
-            int CalculateMaterial(PieceList piecesList)
+            int CalculateMaterial(List<Piece> piecesList)
             {
                 int localMaterial=0;
                 foreach(Piece piece in piecesList)
@@ -47,11 +59,11 @@ public class MyBot : IChessBot
 
             return materialA-materialB;
         }
-    }
+
     public class Candidate
     {
-        Move movement;
-        int materialWon;
+        public Move movement;
+        public int materialWon;
 
         public Candidate(Move move, int material)
         {
