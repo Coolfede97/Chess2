@@ -42,6 +42,7 @@ namespace General
                         else if (piece.IsBishop || piece.IsKnight) localMaterial+=3;
                         else if  (piece.IsRook) localMaterial+=5;
                         else if (piece.IsQueen) localMaterial+=9;
+                        else if (piece.IsKing) localMaterial+=1104;
                     }
                     return localMaterial;
                 }
