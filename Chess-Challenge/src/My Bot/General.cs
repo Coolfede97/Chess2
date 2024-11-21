@@ -53,6 +53,7 @@ namespace General
             if (board.IsInCheckmate() || board.IsInStalemate() || board.IsInsufficientMaterial() || board.IsFiftyMoveDraw())
             {
                 Console.WriteLine(board.GameMoveHistory);
+                foreach (Move move in board.GameMoveHistory) Console.WriteLine(move.ToString());
                 return true;
             }
             else return false;
