@@ -52,11 +52,27 @@ namespace General
         {
             if (board.IsInCheckmate() || board.IsInStalemate() || board.IsInsufficientMaterial() || board.IsFiftyMoveDraw())
             {
-                Console.WriteLine(board.GameMoveHistory);
-                foreach (Move move in board.GameMoveHistory) Console.WriteLine(move.ToString());
                 return true;
             }
             else return false;
+        }
+
+        public static string GetPgn(List<string> movements)
+        {
+            List<string> movimientosExtraidos = new List<string>();
+
+            foreach (var movement in movements)
+            {
+                int startIndex = movement.IndexOf('\'') + 1;
+                int endIndex = movement.LastIndexOf('\''); 
+
+                if (startIndex > 0 && endIndex > startIndex)
+                {
+                    string movimientoExtraido = movement.Substring(startIndex, endIndex - startIndex);
+                    movimientosExtraidos.Add(movimientoExtraido);
+                }
+            }
+            return string.Join(" ", movimientosExtraidos);
         }
         public class Candidate
         {
