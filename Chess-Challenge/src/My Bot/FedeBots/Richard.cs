@@ -8,7 +8,7 @@ public class Richard
     public Random random = new Random();
     public Move Think(Board board, Timer timer)
     {
-        int depth = 2;
+        int depth = 1;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
         return MiniMax(board, depth, !board.IsWhiteToMove, lastCandidate).movement;        
@@ -25,23 +25,26 @@ public class Richard
         }
         List<Candidate> bestCandidates = new List<Candidate>();
         Move[] legalMoves = board.GetLegalMoves();
-        bestCandidates.Add(new Candidate(legalMoves[0], -1104));
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
             Candidate newCandidate = new Candidate(legalMove,-1104);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate);
-            if (isMaximizing && candidate.materialWon>bestCandidates[0].materialWon)
+            if (bestCandidates.Count>0)
             {
-                bestCandidates.Clear();
-                bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
+                if (isMaximizing && candidate.materialWon>bestCandidates[0].materialWon)
+                {
+                    bestCandidates.Clear();
+                    bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
+                }
+                else if (!isMaximizing && candidate.materialWon<bestCandidates[0].materialWon)
+                {
+                    bestCandidates.Clear();
+                    bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
+                }
+                else if (candidate.materialWon==bestCandidates[0].materialWon) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
             }
-            else if (!isMaximizing && candidate.materialWon<bestCandidates[0].materialWon)
-            {
-                bestCandidates.Clear();
-                bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            }
-            else if (candidate.materialWon==bestCandidates[0].materialWon) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
+            else bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
             board.UndoMove(legalMove);
         }
         int randomIndex = random.Next(0,bestCandidates.Count);
