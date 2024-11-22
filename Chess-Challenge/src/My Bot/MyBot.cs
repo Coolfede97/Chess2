@@ -5,8 +5,10 @@ using ChessChallenge.API;
 using static General.Gen;
 public class MyBot : IChessBot
 {
+    
         public Move Think(Board board, Timer timer)
         {
+            
             Richard bot = new Richard();
             Move move = bot.Think(board,timer);
             board.MakeMove(move);

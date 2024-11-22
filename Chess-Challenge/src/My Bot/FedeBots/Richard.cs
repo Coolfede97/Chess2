@@ -8,19 +8,18 @@ public class Richard
     public Random random = new Random();
     public Move Think(Board board, Timer timer)
     {
-        int depth = 1;
+        int depth = 2;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
-        return MiniMax(board, depth, true, lastCandidate).movement;        
+        return MiniMax(board, depth, !board.IsWhiteToMove, lastCandidate).movement;        
     }
 
     public Candidate MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate)
     {
-        bool IamWhite = board.IsWhiteToMove;
         if (depth == 0 || GameIsFinished(board))
         {
-            List<Piece> piecesA = GetAllPieces(board,IamWhite==true);
-            List<Piece> piecesB = GetAllPieces(board,!IamWhite==true);
+            List<Piece> piecesA = GetAllPieces(board, true);
+            List<Piece> piecesB = GetAllPieces(board, false);
             lastCandidate.materialWon=MaterialDifference(piecesA,piecesB);
             return lastCandidate;
         }
