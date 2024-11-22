@@ -7,7 +7,7 @@ public class MyBot : IChessBot
 {
         public Move Think(Board board, Timer timer)
         {
-            Timmy bot = new Timmy();
+            Richard bot = new Richard();
             Move move = bot.Think(board,timer);
             board.MakeMove(move);
             if (GameIsFinished(board))
