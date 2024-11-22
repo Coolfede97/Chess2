@@ -9,7 +9,7 @@ public class MyBot : IChessBot
         public Move Think(Board board, Timer timer)
         {
             
-            Richard bot = new Richard();
+            Richard bot = new Richard(board.IsWhiteToMove);
             Move move = bot.Think(board,timer);
             board.MakeMove(move);
             if (GameIsFinished(board))
