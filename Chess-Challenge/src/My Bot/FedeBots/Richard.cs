@@ -12,7 +12,7 @@ public class Richard
         int depth = 4;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
-        return MiniMax(board, depth, !board.IsWhiteToMove, lastCandidate).movement;        
+        return MiniMax(board, depth, true, lastCandidate).movement;        
     }
 
     public Candidate MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate)
