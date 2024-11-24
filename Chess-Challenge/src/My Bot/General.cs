@@ -65,6 +65,22 @@ namespace General
 
             return materialA-materialB;
         }
+        // public static Move[] OrderMoves(Move[] moves, Board board)
+        // {
+        //     return moves.OrderByDescending
+        //     (move=>
+        //         {
+        //             int score = 0;
+        //             board.MakeMove(move);
+        //             if (board.IsInCheck()) score+=10_000;
+        //             board.UndoMove(move);
+        //             if (move.IsCapture) score+=9_000;
+        //             if (move.IsPromotion) score+=5_000;
+        //             if (board.SquareIsAttackedByOpponent(move.TargetSquare)) score += 1_000;
+        //             return score;
+        //         }
+        //     ).ToArray();
+        // }
         public static bool GameIsFinished(Board board)
         {
             if (board.IsInCheckmate() || board.IsInStalemate() || board.IsInsufficientMaterial() || board.IsFiftyMoveDraw())
