@@ -64,25 +64,6 @@ public class Richard
             {
                 break;
             }
-
-
-            // if (bestCandidates.Count>0)
-            // {
-            //     if (isMaximizing && candidate.materialWon>bestCandidates[0].materialWon)
-            //     {
-            //         bestCandidates.Clear();
-            //         bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            //         alpha = Math.Max(alpha, candidate.materialWon);
-            //     }
-            //     else if (!isMaximizing && candidate.materialWon<bestCandidates[0].materialWon)
-            //     {
-            //         bestCandidates.Clear();
-            //         bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            //         beta = Math.Min(beta, candidate.materialWon);
-            //     }
-            //     else if (candidate.materialWon==bestCandidates[0].materialWon) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            // }
-            // else bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
         }
         int randomIndex = random.Next(0,bestCandidates.Count);
         return bestCandidates[randomIndex];
