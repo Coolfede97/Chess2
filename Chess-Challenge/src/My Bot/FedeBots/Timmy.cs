@@ -18,7 +18,7 @@ public class Timmy
             board.MakeMove(move);
             List<Piece> piecesA= GetAllPieces(board,IamWhite==true);
             List<Piece> piecesB= GetAllPieces(board,!IamWhite==true);
-            int materialWonOnMove = MaterialDifference(isWhite,board);
+            int materialWonOnMove = MaterialDifference(isWhite,board,0);
             if (materialWonOnMove>candidate.materialWon)
             {
                 candidates.Clear();

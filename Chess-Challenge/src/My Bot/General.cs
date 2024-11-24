@@ -28,11 +28,11 @@ namespace General
         }
 
         // El material de piecesA - el material de PiecesB 
-        public static int MaterialDifference(bool isWhite, Board board)
+        public static int MaterialDifference(bool isWhite, Board board, int depth)
         {
             if (board.IsInCheckmate())
             {
-                return isWhite!=board.IsWhiteToMove ? 1104 : -1104;
+                return isWhite!=board.IsWhiteToMove ? 1104+depth : -1104-depth;
             }
             List<Piece> piecesA;
             List<Piece> piecesB;
