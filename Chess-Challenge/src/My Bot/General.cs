@@ -28,26 +28,42 @@ namespace General
         }
 
         // El material de piecesA - el material de PiecesB 
-        public static int MaterialDifference(List<Piece> piecesA, List<Piece> piecesB)
+        public static int MaterialDifference(bool isWhite, Board board)
         {
-                int materialA = CalculateMaterial(piecesA);
-                int materialB = CalculateMaterial(piecesB);
+            if (board.IsInCheckmate())
+            {
+                return isWhite!=board.IsWhiteToMove ? 1104 : -1104;
+            }
+            List<Piece> piecesA;
+            List<Piece> piecesB;
+            if (isWhite)
+            {
+                piecesA = GetAllPieces(board, true);
+                piecesB = GetAllPieces(board, false);
+            }
+            else
+            {
+                piecesA = GetAllPieces(board, false);
+                piecesB = GetAllPieces(board, true);
+            }
+            int materialA = CalculateMaterial(piecesA);
+            int materialB = CalculateMaterial(piecesB);
 
-                int CalculateMaterial(List<Piece> piecesList)
+            int CalculateMaterial(List<Piece> piecesList)
+            {
+                int localMaterial=0;
+                foreach(Piece piece in piecesList)
                 {
-                    int localMaterial=0;
-                    foreach(Piece piece in piecesList)
-                    {
-                        if (piece.IsPawn) localMaterial++;
-                        else if (piece.IsBishop || piece.IsKnight) localMaterial+=3;
-                        else if  (piece.IsRook) localMaterial+=5;
-                        else if (piece.IsQueen) localMaterial+=9;
-                        else if (piece.IsKing) localMaterial+=1104;
-                    }
-                    return localMaterial;
+                    if (piece.IsPawn) localMaterial++;
+                    else if (piece.IsBishop || piece.IsKnight) localMaterial+=3;
+                    else if  (piece.IsRook) localMaterial+=5;
+                    else if (piece.IsQueen) localMaterial+=9;
+                    else if (piece.IsKing) localMaterial+=1104;
                 }
+                return localMaterial;
+            }
 
-                return materialA-materialB;
+            return materialA-materialB;
         }
         public static bool GameIsFinished(Board board)
         {

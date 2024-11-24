@@ -19,19 +19,7 @@ public class Richard
     {
         if (depth == 0 || GameIsFinished(board))
         {
-            List<Piece> piecesA;
-            List<Piece> piecesB; 
-            if (isWhite)
-            {
-                piecesA = GetAllPieces(board, true);
-                piecesB = GetAllPieces(board, false);
-            }
-            else
-            {
-                piecesA = GetAllPieces(board, false);
-                piecesB = GetAllPieces(board, true);
-            }
-            lastCandidate.materialWon=MaterialDifference(piecesA,piecesB);
+            lastCandidate.materialWon=MaterialDifference(isWhite,board);
             return lastCandidate;
         }
         List<Candidate> bestCandidates = new List<Candidate>();
