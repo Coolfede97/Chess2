@@ -8,19 +8,13 @@ public class MyBot : IChessBot
     
         public Move Think(Board board, Timer timer)
         {
-            
+            Console.WriteLine(board.GetFenString());
             Richard bot = new Richard(board.IsWhiteToMove);
             Move move = bot.Think(board,timer);
             board.MakeMove(move);
             if (GameIsFinished(board))
             {
-                Move[] movesHistory = board.GameMoveHistory;
-                List<string> stringMoves = new List<string>();
-                foreach (Move historyMove in movesHistory)
-                {
-                    stringMoves.Add((historyMove.ToString()));
-                }
-                string pgn = GetPgn(stringMoves);
+                string pgn = GetPgn(board);
                 Console.WriteLine(pgn);
                 Console.WriteLine("----------------------------------------------------------------");
             }
