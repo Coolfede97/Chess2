@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ChessChallenge.API;
-
+using static PositionData.PosData;
 namespace General
 {
     public static class Gen
@@ -64,14 +64,23 @@ namespace General
 
             return materialA-materialB;
         }
-        // public static int PositionDifference(bool isWhite, Board board, int depth)
-        // {
-        //     List<Piece> piecesA = GetAllPieces(board,isWhite);
-        //     List<Piece> piecesB = GetAllPieces(board, !isWhite);
-        //     int gamePhase = DeterminateGamePhase(board);
+        public static int PositionDifference(bool isWhite, Board board, int depth)
+        {
+            List<Piece> piecesA = GetAllPieces(board,isWhite);
+            List<Piece> piecesB = GetAllPieces(board, !isWhite);
+            int gamePhase = DeterminateGamePhase(board);
             
+            int PositionValue(Board board, List<Piece> pieces, bool oponent)
+            {
+                foreach (Piece piece in pieces)
+                {
+                    int squareIndex = piece.Square.Index;
+                    PieceType pieceType = piece.PieceType;
+    
+                }
+            }
             
-        // }
+        }
 
         // 0 = Early    1 Mid      2 End
         public static int DeterminateGamePhase(Board board)
