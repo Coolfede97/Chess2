@@ -11,14 +11,6 @@ public class MyBot : IChessBot
             Console.WriteLine(board.GetFenString());
             Richard bot = new Richard(board.IsWhiteToMove);
             Move move = bot.Think(board,timer);
-            board.MakeMove(move);
-            if (GameIsFinished(board))
-            {
-                string pgn = GetPgn(board);
-                Console.WriteLine(pgn);
-                Console.WriteLine("----------------------------------------------------------------");
-            }
-            else board.UndoMove(move);
             return  move;
         }
 }

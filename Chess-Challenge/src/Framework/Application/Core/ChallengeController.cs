@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static ChessChallenge.Application.Settings;
 using static ChessChallenge.Application.ConsoleHelper;
+using static General.Gen;
 
 namespace ChessChallenge.Application
 {
@@ -285,6 +286,7 @@ namespace ChessChallenge.Application
                 }
 
                 string pgn = PGNCreator.CreatePGN(board, result, GetPlayerName(PlayerWhite), GetPlayerName(PlayerBlack));
+                Console.WriteLine(pgn);
                 pgns.AppendLine(pgn);
 
                 // If 2 bots playing each other, start next game automatically.
