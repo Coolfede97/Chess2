@@ -62,7 +62,7 @@ public class Richard
                 beta = Math.Min(beta,candidate.materialWon);
             }
             board.UndoMove(legalMove);
-            if (beta<=alpha)
+            if (beta<alpha)
             {
                 break;
             }
