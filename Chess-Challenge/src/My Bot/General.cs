@@ -66,8 +66,31 @@ namespace General
         }
         // public static int PositionDifference(bool isWhite, Board board, int depth)
         // {
-
+        //     List<Piece> piecesA = GetAllPieces(board,isWhite);
+        //     List<Piece> piecesB = GetAllPieces(board, !isWhite);
+        //     int gamePhase = DeterminateGamePhase(board);
+            
+            
         // }
+
+        // 0 = Early    1 Mid      2 End
+        public static int DeterminateGamePhase(Board board)
+        {
+            int piecesOnBoard=BitboardHelper.GetNumberOfSetBits(board.AllPiecesBitboard);
+            // foreach (PieceType pieceType in Enum.GetValues<PieceType>())
+            // {
+            //     if (pieceType!= PieceType.None)
+            //     {
+            //         PieceList localPieceListWhite = board.GetPieceList(pieceType, true);
+            //         PieceList localPieceListBlack = board.GetPieceList(pieceType, false);
+            //         foreach (Piece piece in localPieceListWhite) piecesOnBoard++;
+            //         foreach (Piece piece in localPieceListBlack) piecesOnBoard++;
+            //     }
+            // }
+            if (piecesOnBoard>20) return 0;
+            if (piecesOnBoard>10) return 1;
+            return 2;
+        }
         public static Move[] OrderMoves(Move[] moves, Board board)
         {
             return moves.OrderByDescending

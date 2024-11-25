@@ -9,7 +9,7 @@ namespace PositionData
     public static class PosData
     {
         // PAWNS ------------------------------------------------------------------
-        public static readonly int[] WhitePawnEarly = 
+        public static readonly int[] APawnEarly = 
         {
             0,  0,  0,  0,  0,  0,  0,  0,
             5, 10, 10,-20,-20, 10, 10,  5,
@@ -21,7 +21,7 @@ namespace PositionData
             0,  0,  0,  0,  0,  0,  0,  0
         };
 
-        public static readonly int[] WhitePawnMid = 
+        public static readonly int[] APawnMid = 
         {
             0,  0,  0,  0,  0,  0,  0,  0,
             5, 10, 10,  0,  0, 10, 10,  5,
@@ -33,7 +33,7 @@ namespace PositionData
             0,  0,  0,  0,  0,  0,  0,  0
         };
 
-        public static readonly int[] WhitePawnEnd = 
+        public static readonly int[] APawnEnd = 
         {
             0,  0,  0,  0,  0,  0,  0,  0,
             0, 10, 10, 20, 20, 10, 10,  0,
@@ -44,13 +44,13 @@ namespace PositionData
             0,  0,  0, 70, 70,  0,  0,  0,
             0,  0,  0,  0,  0,  0,  0,  0
         };
-        public static readonly int[] BlackPawnEarly = WhitePawnEarly.Reverse().ToArray();
-        public static readonly int[] BlackPawnMid = WhitePawnMid.Reverse().ToArray();
-        public static readonly int[] BlackPawnEnd = WhitePawnEnd.Reverse().ToArray();
+        public static readonly int[] BPawnEarly = APawnEarly.Reverse().ToArray();
+        public static readonly int[] BPawnMid = APawnMid.Reverse().ToArray();
+        public static readonly int[] BPawnEnd = APawnEnd.Reverse().ToArray();
 
         // KNIGHTS ------------------------------------------------------------------
 
-        public static readonly int[] WhiteKnightEarly = 
+        public static readonly int[] AKnightEarly = 
         {
             -50,-40,-30,-30,-30,-30,-40,-50,
             -40,-20,  0,  0,  0,  0,-20,-40,
@@ -62,7 +62,7 @@ namespace PositionData
             -50,-40,-30,-30,-30,-30,-40,-50
         };
 
-        public static readonly int[] WhiteKnightMid = 
+        public static readonly int[] AKnightMid = 
         {
             -50,-40,-20,-20,-20,-20,-40,-50,
             -40,-10,  5, 10, 10,  5,-10,-40,
@@ -74,7 +74,7 @@ namespace PositionData
             -50,-40,-20,-20,-20,-20,-40,-50
         };
         
-        public static readonly int[] WhiteKnightEnd = 
+        public static readonly int[] AKnightEnd = 
         {
             -30,-20,-10, -5, -5,-10,-20,-30,
             -20, -5, 10, 15, 15, 10, -5,-20,
@@ -86,13 +86,13 @@ namespace PositionData
             -30,-20,-10, -5, -5,-10,-20,-30
         };
         
-        public static readonly int[] BlackKnightEarly = WhiteKnightEarly.Reverse().ToArray();
-        public static readonly int[] BlackKnightMid = WhiteKnightMid.Reverse().ToArray();
-        public static readonly int[] BlackKnightLate = WhiteKnightEnd.Reverse().ToArray();
+        public static readonly int[] BKnightEarly = AKnightEarly.Reverse().ToArray();
+        public static readonly int[] BKnightMid = AKnightMid.Reverse().ToArray();
+        public static readonly int[] BKnightLate = AKnightEnd.Reverse().ToArray();
         
         // BISHOPS ------------------------------------------------------------------
 
-        private static readonly int[] WhiteBishopEarly = 
+        public static readonly int[] ABishopEarly = 
         {
             -20,-10,-10,-10,-10,-10,-10,-20,
             -10,  5,  0,  0,  0,  0,  5,-10,
@@ -104,7 +104,7 @@ namespace PositionData
             -20,-10,-10,-10,-10,-10,-10,-20
         };
 
-        private static readonly int[] WhiteBishopMid = 
+        public static readonly int[] ABishopMid = 
         {
             -20,-10,-10,-10,-10,-10,-10,-20,
             -10, 10,  5,  5,  5,  5, 10,-10,
@@ -116,7 +116,7 @@ namespace PositionData
             -20,-10,-10,-10,-10,-10,-10,-20
         };
 
-        private static readonly int[] WhiteBishopEnd = 
+        public static readonly int[] ABishopEnd = 
         {
             -10, -5, -5, -5, -5, -5, -5,-10,
             -5,  5,  0,  5,  5,  0,  5, -5,
@@ -127,13 +127,13 @@ namespace PositionData
             -5,  5,  0,  5,  5,  0,  5, -5,
             -10, -5, -5, -5, -5, -5, -5,-10
         };
-        public static readonly int[] BlackBishopEarly = WhiteBishopEarly.Reverse().ToArray();
-        public static readonly int[] BlackBishopMid = WhiteBishopMid.Reverse().ToArray();
-        public static readonly int[] BlackBishopEnd = WhiteBishopEnd.Reverse().ToArray();
+        public static readonly int[] BBishopEarly = ABishopEarly.Reverse().ToArray();
+        public static readonly int[] BBishopMid = ABishopMid.Reverse().ToArray();
+        public static readonly int[] BBishopEnd = ABishopEnd.Reverse().ToArray();
 
         // ROOKS --------------------------------------------------------------------
 
-        private static readonly int[] WhiteRookEarly = 
+        public static readonly int[] ARookEarly = 
         {
             0,  0,  5, 10, 10,  5,  0,  0,
             -5,  0,  0,  0,  0,  0,  0, -5,
@@ -145,7 +145,7 @@ namespace PositionData
             0,  0,  5, 10, 10,  5,  0,  0
         };
 
-        private static readonly int[] WhiteRookMid = 
+        public static readonly int[] ARookMid = 
         {
             0,  0,  5, 10, 10,  5,  0,  0,
             -5,  5, 10, 15, 15, 10,  5, -5,
@@ -157,7 +157,7 @@ namespace PositionData
             0,  0,  5, 10, 10,  5,  0,  0
         };  
 
-        private static readonly int[] WhiteRookEnd = 
+        public static readonly int[] ARookEnd = 
         {
             20, 20, 20, 20, 20, 20, 20, 20,
             10, 10, 10, 10, 10, 10, 10, 10,
@@ -169,12 +169,12 @@ namespace PositionData
             0,  0,  5,  5,  5,  5,  0,  0
         };
 
-        private static readonly int[] BlackRookEarly = WhiteRookEarly.Reverse().ToArray();
-        private static readonly int[] BlackRookMid = WhiteRookMid.Reverse().ToArray();
-        private static readonly int[] BlackRookEnd = WhiteRookEnd.Reverse().ToArray();
+        public static readonly int[] BRookEarly = ARookEarly.Reverse().ToArray();
+        public static readonly int[] BRookMid = ARookMid.Reverse().ToArray();
+        public static readonly int[] BRookEnd = ARookEnd.Reverse().ToArray();
 
         // QUEENS -------------------------------------------------------------------
-        private static readonly int[] WhiteQueenEarly = 
+        public static readonly int[] AQueenEarly = 
         {
             -20,-10,-10, -5, -5,-10,-10,-20,
             -10,  0,  0,  0,  0,  0,  0,-10,
@@ -186,7 +186,7 @@ namespace PositionData
             -20,-10,-10, -5, -5,-10,-10,-20
         };
 
-        private static readonly int[] WhiteQueenMid = 
+        public static readonly int[] AQueenMid = 
         {
             -20,-10,-10, -5, -5,-10,-10,-20,
             -10,  0,  0,  0,  0,  0,  0,-10,
@@ -197,7 +197,7 @@ namespace PositionData
             -10,  0,  5,  0,  0,  0,  0,-10,
             -20,-10,-10, -5, -5,-10,-10,-20
         };
-        private static readonly int[] WhiteQueenEnd =
+        public static readonly int[] AQueenEnd =
         {
             -20,-10,-10, -5, -5,-10,-10,-20,
             -10,  0,  0,  0,  0,  0,  0,-10,
@@ -208,12 +208,12 @@ namespace PositionData
             -10,  0,  5,  0,  0,  0,  0,-10,
             -20,-10,-10, -5, -5,-10,-10,-20
         };
-        private static readonly int[] BlackQueenEarly = WhiteQueenEarly.Reverse().ToArray();
-        private static readonly int[] BlackQueenMid = WhiteQueenMid.Reverse().ToArray();
-        private static readonly int[] BlackQueenEnd = WhiteQueenEnd.Reverse().ToArray();
+        public static readonly int[] BQueenEarly = AQueenEarly.Reverse().ToArray();
+        public static readonly int[] BQueenMid = AQueenMid.Reverse().ToArray();
+        public static readonly int[] BQueenEnd = AQueenEnd.Reverse().ToArray();
 
         // KINGS --------------------------------------------------------------------
-        private static readonly int[] WhiteKingEarly = 
+        public static readonly int[] AKingEarly = 
         {
             -30,-40,-40,-50,-50,-40,-40,-30,
             -30,-40,-40,-50,-50,-40,-40,-30,
@@ -225,7 +225,7 @@ namespace PositionData
             20, 30, 10,   0,   0, 10, 30, 20
         };
 
-        private static readonly int[] WhiteKingMid = 
+        public static readonly int[] AKingMid = 
         {
             -50,-40,-30,-20,-20,-30,-40,-50,
             -30,-20,-10,  0,  0,-10,-20,-30,
@@ -237,7 +237,7 @@ namespace PositionData
             -50,-40,-30,-20,-20,-30,-40,-50
         };
 
-        private static readonly int[] WhiteKingEnd = 
+        public static readonly int[] AKingEnd = 
         {
             -50,-40,-30,-20,-20,-30,-40,-50,
             -30,-20,-10,  0,  0,-10,-20,-30,
@@ -248,9 +248,9 @@ namespace PositionData
             -30,-20,-10,  0,  0,-10,-20,-30,
             -50,-40,-30,-20,-20,-30,-40,-50
         };
-        private static readonly int[] BlackKingEarly = WhiteKingEarly.Reverse().ToArray();
-        private static readonly int[] BlackKingMid = WhiteKingMid.Reverse().ToArray();
-        private static readonly int[] BlackKingEnd = WhiteKingEnd.Reverse().ToArray();
+        public static readonly int[] BKingEarly = AKingEarly.Reverse().ToArray();
+        public static readonly int[] BKingMid = AKingMid.Reverse().ToArray();
+        public static readonly int[] BKingEnd = AKingEnd.Reverse().ToArray();
 
     }
 }
