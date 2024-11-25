@@ -8,7 +8,6 @@ public class MyBot : IChessBot
     
         public Move Think(Board board, Timer timer)
         {
-            Console.WriteLine(DeterminateGamePhase(board));
             Brokenice bot = new Brokenice(board.IsWhiteToMove);
             Move move = bot.Think(board,timer);
             return  move;

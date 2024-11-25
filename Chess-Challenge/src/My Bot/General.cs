@@ -54,10 +54,24 @@ namespace General
                 int localMaterial=0;
                 foreach(Piece piece in piecesList)
                 {
-                    if (piece.IsPawn) localMaterial+=100;
-                    else if (piece.IsBishop || piece.IsKnight) localMaterial+=300;
-                    else if  (piece.IsRook) localMaterial+=500;
-                    else if (piece.IsQueen) localMaterial+=900;
+                    int gamePhase = DeterminateGamePhase(board);
+                    // Valores sacados de: https://blog.mathieuacher.com/ChessPiecesValues/
+                    if (gamePhase==0 || gamePhase==1)
+                    {
+                        if (piece.IsPawn) localMaterial+=126;
+                        else if (piece.IsKnight) localMaterial+=781;
+                        else if (piece.IsBishop) localMaterial+=825;
+                        else if  (piece.IsRook) localMaterial+=1276;
+                        else if (piece.IsQueen) localMaterial+=2538;
+                    }
+                    else
+                    {
+                        if (piece.IsPawn) localMaterial+=208;
+                        else if (piece.IsKnight) localMaterial+=854;
+                        else if (piece.IsBishop) localMaterial+=915;
+                        else if  (piece.IsRook) localMaterial+=1380;
+                        else if (piece.IsQueen) localMaterial+=2682;
+                    }
                 }
                 return localMaterial;
             }

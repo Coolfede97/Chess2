@@ -22,7 +22,7 @@ public class Brokenice
             lastCandidate.materialWon=MaterialDifference(isWhite,board,depth)+PositionalDifference(isWhite,board,depth);
             return lastCandidate;
         }
-        List<Candidate> bestCandidates = new List<Candidate>();
+        Candidate bestCandidate = new Candidate(Move.NullMove,isMaximizing ? int.MinValue : int.MaxValue);
         int bestValue = isMaximizing ? int.MinValue : int.MaxValue;
         Move[] legalMoves = board.GetLegalMoves();
         legalMoves = OrderMoves(legalMoves,board);
@@ -31,18 +31,13 @@ public class Brokenice
             board.MakeMove(legalMove);
             Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta);
-
+            if (bestCandidate.movement == Move.NullMove) bestCandidate=new Candidate(legalMove,candidate.materialWon);
             if (isMaximizing)
             {
                 if (candidate.materialWon>bestValue)
                 {
                     bestValue=candidate.materialWon;
-                    bestCandidates.Clear();
-                    bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
-                }
-                else if (candidate.materialWon==bestValue)
-                {
-                    bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
+                    bestCandidate = new Candidate(legalMove, candidate.materialWon);
                 }
                 alpha = Math.Max(alpha, candidate.materialWon);
             }
@@ -51,12 +46,7 @@ public class Brokenice
                 if (candidate.materialWon<bestValue)
                 {
                     bestValue=candidate.materialWon;
-                    bestCandidates.Clear();
-                    bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
-                }
-                else if (candidate.materialWon==bestValue)
-                {
-                    bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
+                    bestCandidate = new Candidate(legalMove, candidate.materialWon);
                 }
                 beta = Math.Min(beta,candidate.materialWon);
             }
@@ -66,8 +56,7 @@ public class Brokenice
                 break;
             }
         }
-        int randomIndex = random.Next(0,bestCandidates.Count);
-        return bestCandidates[randomIndex];
+        return bestCandidate;
     }
     public Brokenice(bool isWhiteP)
     {
