@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ChessChallenge.API;
 using static General.Gen;
-
 public class Brokenice
 {
     public bool isWhite;
@@ -26,7 +25,6 @@ public class Brokenice
         List<Candidate> bestCandidates = new List<Candidate>();
         int bestValue = isMaximizing ? int.MinValue : int.MaxValue;
         Move[] legalMoves = board.GetLegalMoves();
-        // legalMoves = OrderMoves(legalMoves,board);
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);

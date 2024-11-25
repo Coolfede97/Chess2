@@ -12,7 +12,9 @@ public class Richard
         int depth = 4;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
-        return MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue).movement;        
+        Candidate move = MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue);
+        Console.WriteLine(move.movement + "  |  " + move.materialWon);
+        return move.movement;
     }
 
     public Candidate MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)
@@ -64,30 +66,10 @@ public class Richard
             {
                 break;
             }
-
-
-            // if (bestCandidates.Count>0)
-            // {
-            //     if (isMaximizing && candidate.materialWon>bestCandidates[0].materialWon)
-            //     {
-            //         bestCandidates.Clear();
-            //         bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            //         alpha = Math.Max(alpha, candidate.materialWon);
-            //     }
-            //     else if (!isMaximizing && candidate.materialWon<bestCandidates[0].materialWon)
-            //     {
-            //         bestCandidates.Clear();
-            //         bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            //         beta = Math.Min(beta, candidate.materialWon);
-            //     }
-            //     else if (candidate.materialWon==bestCandidates[0].materialWon) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            // }
-            // else bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
         }
         int randomIndex = random.Next(0,bestCandidates.Count);
         return bestCandidates[randomIndex];
     }
-
     public Richard(bool isWhiteP)
     {
         isWhite=isWhiteP;
