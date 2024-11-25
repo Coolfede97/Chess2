@@ -13,7 +13,6 @@ public class Richard
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
         Candidate move = MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue);
-        Console.WriteLine(move.movement + "  |  " + move.materialWon);
         return move.movement;
     }
 

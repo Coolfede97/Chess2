@@ -32,7 +32,7 @@ namespace General
         {
             if (board.IsInCheckmate())
             {
-                return isWhite!=board.IsWhiteToMove ? 1104+depth : -1104-depth;
+                return isWhite!=board.IsWhiteToMove ? 100_000+depth : -100_000-depth;
             }
             List<Piece> piecesA;
             List<Piece> piecesB;
@@ -54,33 +54,36 @@ namespace General
                 int localMaterial=0;
                 foreach(Piece piece in piecesList)
                 {
-                    if (piece.IsPawn) localMaterial++;
-                    else if (piece.IsBishop || piece.IsKnight) localMaterial+=3;
-                    else if  (piece.IsRook) localMaterial+=5;
-                    else if (piece.IsQueen) localMaterial+=9;
-                    else if (piece.IsKing) localMaterial+=1104;
+                    if (piece.IsPawn) localMaterial+=100;
+                    else if (piece.IsBishop || piece.IsKnight) localMaterial+=300;
+                    else if  (piece.IsRook) localMaterial+=500;
+                    else if (piece.IsQueen) localMaterial+=900;
                 }
                 return localMaterial;
             }
 
             return materialA-materialB;
         }
-        // public static Move[] OrderMoves(Move[] moves, Board board)
+        // public static int PositionDifference(bool isWhite, Board board, int depth)
         // {
-        //     return moves.OrderByDescending
-        //     (move=>
-        //         {
-        //             int score = 0;
-        //             board.MakeMove(move);
-        //             if (board.IsInCheck()) score+=10_000;
-        //             board.UndoMove(move);
-        //             if (move.IsCapture) score+=9_000;
-        //             if (move.IsPromotion) score+=5_000;
-        //             if (board.SquareIsAttackedByOpponent(move.TargetSquare)) score += 1_000;
-        //             return score;
-        //         }
-        //     ).ToArray();
+
         // }
+        public static Move[] OrderMoves(Move[] moves, Board board)
+        {
+            return moves.OrderByDescending
+            (move=>
+                {
+                    int score = 0;
+                    board.MakeMove(move);
+                    if (board.IsInCheck()) score+=10_000;
+                    board.UndoMove(move);
+                    if (move.IsCapture) score+=9_000;
+                    if (move.IsPromotion) score+=5_000;
+                    if (board.SquareIsAttackedByOpponent(move.TargetSquare)) score += 1_000;
+                    return score;
+                }
+            ).ToArray();
+        }
         public static bool GameIsFinished(Board board)
         {
             if (board.IsInCheckmate() || board.IsInStalemate() || board.IsInsufficientMaterial() || board.IsFiftyMoveDraw())

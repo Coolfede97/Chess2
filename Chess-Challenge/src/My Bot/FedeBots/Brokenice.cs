@@ -25,10 +25,11 @@ public class Brokenice
         List<Candidate> bestCandidates = new List<Candidate>();
         int bestValue = isMaximizing ? int.MinValue : int.MaxValue;
         Move[] legalMoves = board.GetLegalMoves();
+        legalMoves = OrderMoves(legalMoves,board);
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
-            Candidate newCandidate = new Candidate(legalMove,-1104);
+            Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta);
 
             if (isMaximizing)
