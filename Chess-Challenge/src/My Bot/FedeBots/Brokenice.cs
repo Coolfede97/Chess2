@@ -19,7 +19,7 @@ public class Brokenice
     {
         if (depth == 0 || GameIsFinished(board))
         {
-            lastCandidate.materialWon=MaterialDifference(isWhite,board,depth);
+            lastCandidate.materialWon=MaterialDifference(isWhite,board,depth)+PositionalDifference(isWhite,board,depth);
             return lastCandidate;
         }
         List<Candidate> bestCandidates = new List<Candidate>();

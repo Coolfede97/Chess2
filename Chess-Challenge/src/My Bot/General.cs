@@ -64,24 +64,79 @@ namespace General
 
             return materialA-materialB;
         }
-        public static int PositionDifference(bool isWhite, Board board, int depth)
+        public static int PositionalDifference(bool isWhite, Board board, int depth)
         {
             List<Piece> piecesA = GetAllPieces(board,isWhite);
             List<Piece> piecesB = GetAllPieces(board, !isWhite);
             int gamePhase = DeterminateGamePhase(board);
-            
-            int PositionValue(Board board, List<Piece> pieces, bool oponent)
-            {
-                foreach (Piece piece in pieces)
-                {
-                    int squareIndex = piece.Square.Index;
-                    PieceType pieceType = piece.PieceType;
-    
-                }
-            }
-            
+            int valueA = PositionValue(piecesA,false,gamePhase);
+            int valueB = PositionValue(piecesB, true, gamePhase);
+            return valueA-valueB;
         }
+        private static int PositionValue(List<Piece> pieces, bool oponent, int gamePhase)
+        {
+            int totalPositionValue = 0;
 
+            foreach (Piece piece in pieces)
+            {
+                // Obtener el índice de la posición de la pieza
+                int squareIndex = piece.Square.Index;
+
+                // Tabla que se usará para esta pieza
+                int[] table={};
+
+                // Seleccionar tabla según el tipo de pieza y fase del juego
+                if (piece.PieceType == PieceType.Pawn)
+                {
+                    table = gamePhase == 0 ? (oponent ? BPawnEarly : APawnEarly)
+                        : gamePhase == 1 ? (oponent ? BPawnMid : APawnMid)
+                        : (oponent ? BPawnEnd : APawnEnd);
+                }
+                else if (piece.PieceType == PieceType.Knight)
+                {
+                    table = gamePhase == 0 ? (oponent ? BKnightEarly : AKnightEarly)
+                        : gamePhase == 1 ? (oponent ? BKnightMid : AKnightMid)
+                        : (oponent ? BKnightLate : AKnightEnd);
+                }
+                else if (piece.PieceType == PieceType.Bishop)
+                {
+                    table = gamePhase == 0 ? (oponent ? BBishopEarly : ABishopEarly)
+                        : gamePhase == 1 ? (oponent ? BBishopMid : ABishopMid)
+                        : (oponent ? BBishopEnd : ABishopEnd);
+                }
+                else if (piece.PieceType == PieceType.Rook)
+                {
+                    table = gamePhase == 0 ? (oponent ? BRookEarly : ARookEarly)
+                        : gamePhase == 1 ? (oponent ? BRookMid : ARookMid)
+                        : (oponent ? BRookEnd : ARookEnd);
+                }
+                else if (piece.PieceType == PieceType.Queen)
+                {
+                    table = gamePhase == 0 ? (oponent ? BQueenEarly : AQueenEarly)
+                        : gamePhase == 1 ? (oponent ? BQueenMid : AQueenMid)
+                        : (oponent ? BQueenEnd : AQueenEnd);
+                }
+                else if (piece.PieceType == PieceType.King)
+                {
+                    table = gamePhase == 0 ? (oponent ? BKingEarly : AKingEarly)
+                        : gamePhase == 1 ? (oponent ? BKingMid : AKingMid)
+                        : (oponent ? BKingEnd : AKingEnd);
+                }
+                if (table.Length!=0)
+                {
+                    totalPositionValue += table[squareIndex];
+                }
+                else
+                {
+                    Console.WriteLine("FEDE ADVERTENCIA ###########################");
+                    Console.WriteLine("LINEA 129 GENERAL.CS ###########################");
+                    Console.WriteLine("TABLE NO AGARRÓ NINGUNA TABLA ###########################");
+                } 
+                
+            }
+
+            return totalPositionValue;
+        }
         // 0 = Early    1 Mid      2 End
         public static int DeterminateGamePhase(Board board)
         {
