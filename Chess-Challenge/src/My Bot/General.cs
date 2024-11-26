@@ -106,60 +106,48 @@ namespace General
 
             foreach (Piece piece in pieces)
             {
-                // Obtener el índice de la posición de la pieza
                 int squareIndex = piece.Square.Index;
 
-                // Tabla que se usará para esta pieza
-                int[] table={};
+                int[] table = { };
 
-                // Seleccionar tabla según el tipo de pieza y fase del juego
                 if (piece.PieceType == PieceType.Pawn)
                 {
-                    table = gamePhase == 0 ? (oponent ? BPawnEarly : APawnEarly)
-                        : gamePhase == 1 ? (oponent ? BPawnMid : APawnMid)
-                        : (oponent ? BPawnEnd : APawnEnd);
+                    table = gamePhase == 2 ? (oponent ? BPawnEnd : APawnEnd)
+                                        : (oponent ? BPawnMid : APawnMid);
                 }
                 else if (piece.PieceType == PieceType.Knight)
                 {
-                    table = gamePhase == 0 ? (oponent ? BKnightEarly : AKnightEarly)
-                        : gamePhase == 1 ? (oponent ? BKnightMid : AKnightMid)
-                        : (oponent ? BKnightLate : AKnightEnd);
+                    table = gamePhase == 2 ? (oponent ? BKnightLate : AKnightEnd)
+                                        : (oponent ? BKnightMid : AKnightMid);
                 }
                 else if (piece.PieceType == PieceType.Bishop)
                 {
-                    table = gamePhase == 0 ? (oponent ? BBishopEarly : ABishopEarly)
-                        : gamePhase == 1 ? (oponent ? BBishopMid : ABishopMid)
-                        : (oponent ? BBishopEnd : ABishopEnd);
+                    table = gamePhase == 2 ? (oponent ? BBishopEnd : ABishopEnd)
+                                        : (oponent ? BBishopMid : ABishopMid);
                 }
                 else if (piece.PieceType == PieceType.Rook)
                 {
-                    table = gamePhase == 0 ? (oponent ? BRookEarly : ARookEarly)
-                        : gamePhase == 1 ? (oponent ? BRookMid : ARookMid)
-                        : (oponent ? BRookEnd : ARookEnd);
+                    table = gamePhase == 2 ? (oponent ? BRookEnd : ARookEnd)
+                                        : (oponent ? BRookMid : ARookMid);
                 }
                 else if (piece.PieceType == PieceType.Queen)
                 {
-                    table = gamePhase == 0 ? (oponent ? BQueenEarly : AQueenEarly)
-                        : gamePhase == 1 ? (oponent ? BQueenMid : AQueenMid)
-                        : (oponent ? BQueenEnd : AQueenEnd);
+                    table = gamePhase == 2 ? (oponent ? BQueenEnd : AQueenEnd)
+                                        : (oponent ? BQueenMid : AQueenMid);
                 }
                 else if (piece.PieceType == PieceType.King)
                 {
-                    table = gamePhase == 0 ? (oponent ? BKingEarly : AKingEarly)
-                        : gamePhase == 1 ? (oponent ? BKingMid : AKingMid)
-                        : (oponent ? BKingEnd : AKingEnd);
+                    table = gamePhase == 2 ? (oponent ? BKingEnd : AKingEnd)
+                                        : (oponent ? BKingMid : AKingMid);
                 }
-                if (table.Length!=0)
+                if (table.Length != 0)
                 {
                     totalPositionValue += table[squareIndex];
                 }
                 else
                 {
-                    Console.WriteLine("FEDE ADVERTENCIA ###########################");
-                    Console.WriteLine("LINEA 129 GENERAL.CS ###########################");
-                    Console.WriteLine("TABLE NO AGARRÓ NINGUNA TABLA ###########################");
-                } 
-                
+                    Console.WriteLine("ADVERTENCIA: No se encontró una tabla válida para la pieza en la casilla " + squareIndex);
+                }
             }
 
             return totalPositionValue;
