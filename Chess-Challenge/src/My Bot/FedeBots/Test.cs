@@ -30,6 +30,11 @@ public class Test
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
+            if (board.IsRepeatedPosition())
+            {
+                board.UndoMove(legalMove);
+                break;
+            }
             Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta);
             if (bestCandidate.movement == Move.NullMove) bestCandidate=new Candidate(legalMove,candidate.materialWon);
