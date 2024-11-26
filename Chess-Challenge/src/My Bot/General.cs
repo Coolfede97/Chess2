@@ -33,11 +33,11 @@ namespace General
             int RatingPlus = 0;
             if (move.IsCapture)
             {
-                RatingPlus+= isWhite!=board.IsWhiteToMove ? 1 : -1;
+                RatingPlus+= isWhite!=board.IsWhiteToMove ? 15 : -15;
             }
             if (board.IsInCheck())
             {
-                RatingPlus+= isWhite!=board.IsWhiteToMove ? 2 : -2;
+                RatingPlus+= isWhite!=board.IsWhiteToMove ? 30 : -30;
             }
             return RatingPlus;
         }
@@ -164,6 +164,24 @@ namespace General
 
             return totalPositionValue;
         }
+
+        public static List<Move> GetNoisyMoves(Board board, bool isWhite)
+        {
+            Move[] legalMoves = board.GetLegalMoves();
+            List<Move> noisyMoves = new List<Move>();
+            foreach (Move legalMove in legalMoves)
+            {
+                if (legalMove.IsCapture || legalMove.IsPromotion) noisyMoves.Add(legalMove);
+                else
+                {
+                    board.MakeMove(legalMove);
+                    if (isWhite!=board.IsWhiteToMove && board.IsInCheck()) noisyMoves.Add(legalMove);
+                    board.UndoMove(legalMove);
+                }
+            }
+            return noisyMoves;
+        }
+
         // 0 = Early    1 Mid      2 End
         public static int DeterminateGamePhase(Board board)
         {
