@@ -100,7 +100,8 @@ namespace ChessChallenge.Application
             // ## MODIFICAR ACÁ PARA DETERMINADO FEN #################################################
             // #####################################################################################
             board.LoadPosition(botMatchStartFens[fenIndex]);
-
+            Console.WriteLine("------------------------------------O-----------------------------------------------");
+            Console.WriteLine(botMatchStartFens[fenIndex]);
             // Player Setup
             PlayerWhite = CreatePlayer(whiteType);
             PlayerBlack = CreatePlayer(blackType);

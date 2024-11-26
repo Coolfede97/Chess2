@@ -28,11 +28,24 @@ namespace General
         }
 
         // El material de piecesA - el material de PiecesB 
+        public static int RateMovement(Move move, bool isWhite, Board board)
+        {
+            int RatingPlus = 0;
+            if (move.IsCapture)
+            {
+                RatingPlus+= isWhite!=board.IsWhiteToMove ? 1 : -1;
+            }
+            if (board.IsInCheck())
+            {
+                RatingPlus+= isWhite!=board.IsWhiteToMove ? 2 : -2;
+            }
+            return RatingPlus;
+        }
         public static int MaterialDifference(bool isWhite, Board board, int depth)
         {
             if (board.IsInCheckmate())
             {
-                return isWhite!=board.IsWhiteToMove ? 100_000+depth : -100_000-depth;
+                return isWhite!=board.IsWhiteToMove ? 100_000+depth*1000 : -100_000-depth*1000;
             }
             List<Piece> piecesA;
             List<Piece> piecesB;
@@ -58,19 +71,19 @@ namespace General
                     // Valores sacados de: https://blog.mathieuacher.com/ChessPiecesValues/
                     if (gamePhase==0 || gamePhase==1)
                     {
-                        if (piece.IsPawn) localMaterial+=126;
-                        else if (piece.IsKnight) localMaterial+=781;
-                        else if (piece.IsBishop) localMaterial+=825;
-                        else if  (piece.IsRook) localMaterial+=1276;
-                        else if (piece.IsQueen) localMaterial+=2538;
+                        if (piece.IsPawn) localMaterial+=82;
+                        else if (piece.IsKnight) localMaterial+=337;
+                        else if (piece.IsBishop) localMaterial+=365;
+                        else if  (piece.IsRook) localMaterial+=477;
+                        else if (piece.IsQueen) localMaterial+=1025;
                     }
                     else
                     {
-                        if (piece.IsPawn) localMaterial+=208;
-                        else if (piece.IsKnight) localMaterial+=854;
-                        else if (piece.IsBishop) localMaterial+=915;
-                        else if  (piece.IsRook) localMaterial+=1380;
-                        else if (piece.IsQueen) localMaterial+=2682;
+                        if (piece.IsPawn) localMaterial+=94;
+                        else if (piece.IsKnight) localMaterial+=281;
+                        else if (piece.IsBishop) localMaterial+=297;
+                        else if  (piece.IsRook) localMaterial+=512;
+                        else if (piece.IsQueen) localMaterial+=936;
                     }
                 }
                 return localMaterial;

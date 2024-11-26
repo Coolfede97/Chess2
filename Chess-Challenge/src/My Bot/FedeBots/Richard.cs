@@ -9,7 +9,7 @@ public class Richard
     public Random random = new Random();
     public Move Think(Board board, Timer timer)
     {
-        int depth = 4;
+        int depth = 2;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
         Candidate move = MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue);
