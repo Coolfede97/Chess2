@@ -9,7 +9,7 @@ public class Brokenice
     public Random random = new Random();
     public Move Think(Board board, Timer timer)
     {
-        int depth = 4;
+        int depth = 2;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
         return MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue).movement;        
@@ -32,11 +32,11 @@ public class Brokenice
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove); 
-            if (board.IsRepeatedPosition())
-            {
-                board.UndoMove(legalMove);
-                break;
-            }
+            // if (board.IsRepeatedPosition())
+            // {
+            //     board.UndoMove(legalMove);
+            //     continue;
+            // }
             Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta);
             if (bestCandidate.movement == Move.NullMove) bestCandidate=new Candidate(legalMove,candidate.materialWon);

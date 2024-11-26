@@ -7,7 +7,7 @@ public class Test
 {
     public bool isWhite;
     public Random random = new Random();
-    public int depth = 4;
+    public int depth = 2;
     public int extraDepth = 2;
     public Move Think(Board board, Timer timer)
     {
@@ -30,11 +30,11 @@ public class Test
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
-            if (board.IsRepeatedPosition())
-            {
-                board.UndoMove(legalMove);
-                break;
-            }
+            // if (board.IsRepeatedPosition())
+            // {
+            //     board.UndoMove(legalMove);
+            //     continue;
+            // }
             Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta);
             if (bestCandidate.movement == Move.NullMove) bestCandidate=new Candidate(legalMove,candidate.materialWon);
