@@ -213,29 +213,10 @@ namespace General
             else return false;
         }
 
-        public static string GetPgn(Board board)
-        {
-            Move[] movesHistory = board.GameMoveHistory;
-            List<string> stringMoves = new List<string>();
-            foreach (Move historyMove in movesHistory)
-            {
-                stringMoves.Add(historyMove.ToString());
-            }
-            List<string> movimientosExtraidos = new List<string>();
-
-            foreach (var movement in stringMoves)
-            {
-                int startIndex = movement.IndexOf('\'') + 1;
-                int endIndex = movement.LastIndexOf('\''); 
-
-                if (startIndex > 0 && endIndex > startIndex)
-                {
-                    string movimientoExtraido = movement.Substring(startIndex, endIndex - startIndex);
-                    movimientosExtraidos.Add(movimientoExtraido);
-                }
-            }
-            return string.Join(" ", movimientosExtraidos);
-        }
+        // public static string MoveToString(string input)
+        // {
+            
+        // }
         public class Candidate
         {
             public Move movement;

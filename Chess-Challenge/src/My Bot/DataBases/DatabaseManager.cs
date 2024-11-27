@@ -2,27 +2,44 @@ using System.Text.Json;
 using System.IO;
 using System.Collections.Generic;
 using ChessChallenge.API;
+using System;
+using System.Text.Json;
 public static class DatabaseManager
 {
-    private static string openingsPath = "Openings.json";
+    private static string openingsPath = "src/My Bot/DataBases/Openings.json";
     
-    public static void SaveOpeningData(List<fenMove> data)
+    public static List<FenMove> LoadFenMoveList()
     {
-        string json = JsonSerializer.Serialize(data, new JsonSerializerOptions{WriteIndented=true});
-        File.WriteAllText(openingsPath, json);
+        if (!File.Exists(openingsPath))
+        {
+            Console.WriteLine("No se encuentra el archivo Openings.json :(");
+        }
+        string jsonContent = File.ReadAllText(openingsPath);
+        List<FenMove>? fenMoves = JsonSerializer.Deserialize<List<FenMove>>(jsonContent);
+        return fenMoves ?? new List<FenMove>();
+        // foreach (FenMove fenMove in data)
+        // {
+        //     Console.WriteLine(fenMove.fen);
+        //     Console.WriteLine(fenMove.materialWon);
+        // }
+        
     }
 
-    public class fenMove
+    public class FenMove
     {
-        public string fen {get; set;}
-        public Move bestMove {get;set;}
-        public int materialWon {get;set;}
+        public string Fen { get; set; } // La posición FEN
+        public string BestMove { get; set; } // El mejor movimiento
+        public int MaterialWon { get; set; } // Material ganado
 
-        public fenMove(string fenP, Move bestMoveP, int materialWonP)
+        // Constructor vacío (obligatorio para deserializar sin errores)
+        public FenMove() { }
+
+        // Constructor adicional para inicializar
+        public FenMove(string fen, Move bestMove, int materialWon)
         {
-            fen=fenP;
-            bestMove=bestMoveP;
-            materialWon=materialWonP;
+            Fen = fen;
+            BestMove = bestMove.ToString();
+            MaterialWon = materialWon;
         }
     }
 
