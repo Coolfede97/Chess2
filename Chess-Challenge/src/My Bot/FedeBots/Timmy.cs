@@ -6,7 +6,7 @@ using static General.Gen;
 public class Timmy
 {
     public bool isWhite;
-    public Move Think(Board board, Timer timer)
+    public Candidate Think(Board board, Timer timer)
     {
         Random random = new Random();
         bool IamWhite = board.IsWhiteToMove ? true : false;
@@ -35,7 +35,7 @@ public class Timmy
         }
         int randomIndex = random.Next(0,candidates.Count);
         candidate = candidates[randomIndex];
-        return candidate.movement;
+        return candidate;
     }
     public Timmy(bool isWhiteP)
     {

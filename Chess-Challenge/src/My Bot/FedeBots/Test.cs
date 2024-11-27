@@ -7,13 +7,11 @@ public class Test
 {
     public bool isWhite;
     public Random random = new Random();
-    public int depth = 4;
+    public int depth = 1;
     public int extraDepth = 2;
-    public Move Think(Board board, Timer timer)
+    public Candidate Think(Board board, Timer timer)
     {
-        Move[] legalMoves = board.GetLegalMoves();
-        Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
-        return MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue).movement;        
+        return MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);        
     }
 
     public Candidate MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)

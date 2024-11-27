@@ -7,13 +7,13 @@ public class Richard
 {
     public bool isWhite;
     public Random random = new Random();
-    public Move Think(Board board, Timer timer)
+    public Candidate Think(Board board, Timer timer)
     {
-        int depth = 2;
+        int depth = 1;
         Move[] legalMoves = board.GetLegalMoves();
         Candidate lastCandidate = new Candidate(legalMoves[0],-1104);
         Candidate move = MiniMax(board, depth, true, lastCandidate, int.MinValue, int .MaxValue);
-        return move.movement;
+        return move;
     }
 
     public Candidate MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)
