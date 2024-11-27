@@ -99,6 +99,7 @@ namespace ChessChallenge.Application
             // ######################################################################################
             // ## MODIFICAR ACÁ PARA DETERMINADO FEN #################################################
             // #####################################################################################
+            fenIndex=0; // CAMBIAR PARA VOLVER A LAS DISTINTAS POSICIONES EN LAS PRUEBAS
             board.LoadPosition(botMatchStartFens[fenIndex]);
             Console.WriteLine("------------------------------------O-----------------------------------------------");
             Console.WriteLine(botMatchStartFens[fenIndex]);

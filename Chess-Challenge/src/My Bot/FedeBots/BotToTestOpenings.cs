@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using ChessChallenge.API;
 using static General.Gen;
-public class Brokenice
+public class BotToTestOpenings
 {
     public bool isWhite;
     public Random random = new Random();
-    public int depth = 4;
+    public int depth = 2;
     public int extraDepth = 2;
     public Candidate Think(Board board, Timer timer)
     {
@@ -111,7 +111,7 @@ public class Brokenice
             return lastCandidate;
         }
     }
-    public Brokenice(bool isWhiteP)
+    public BotToTestOpenings(bool isWhiteP)
     {
         isWhite=isWhiteP;
     }

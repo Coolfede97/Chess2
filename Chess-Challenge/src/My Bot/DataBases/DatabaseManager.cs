@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using ChessChallenge.API;
 using System;
-using System.Text.Json;
 public static class DatabaseManager
 {
     private static string openingsPath = "src/My Bot/DataBases/Openings.json";
@@ -17,12 +16,13 @@ public static class DatabaseManager
         string jsonContent = File.ReadAllText(openingsPath);
         List<FenMove>? fenMoves = JsonSerializer.Deserialize<List<FenMove>>(jsonContent);
         return fenMoves ?? new List<FenMove>();
-        // foreach (FenMove fenMove in data)
-        // {
-        //     Console.WriteLine(fenMove.fen);
-        //     Console.WriteLine(fenMove.materialWon);
-        // }
+    }
+
+    public static void SaveFenMoveList(List<FenMove> fenMoves)
+    {
         
+        string jsonContent = JsonSerializer.Serialize(fenMoves, new JsonSerializerOptions{WriteIndented=true});
+        File.WriteAllText(openingsPath,jsonContent);
     }
 
     public class FenMove
