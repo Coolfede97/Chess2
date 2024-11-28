@@ -5,24 +5,61 @@ using ChessChallenge.API;
 using System;
 public static class DatabaseManager
 {
-    private static string openingsPath = "src/My Bot/DataBases/Openings.json";
-    
-    public static List<FenMove> LoadFenMoveList()
+    public static Random random = new Random();
+    private static string[] ECOs = 
     {
-        if (!File.Exists(openingsPath))
+        "src/My Bot/DataBases/ecoA.json",
+        "src/My Bot/DataBases/ecoB.json",
+        "src/My Bot/DataBases/ecoC.json",
+        "src/My Bot/DataBases/ecoD.json",
+        "src/My Bot/DataBases/ecoE.json"
+    };
+    public static List<List<Opening>> openings = LoadECOS();
+    public static List<List<Opening>> LoadECOS()
+    {
+        List<List<Opening>> openings = new List<List<Opening>>();
+        foreach (string ecoPath in ECOs)
         {
-            Console.WriteLine("No se encuentra el archivo Openings.json :(");
+            if (!File.Exists(ecoPath))
+            {
+                Console.WriteLine("No se encuentra el archivo Openings.json :(");
+            }
+            string jsonContent = File.ReadAllText(ecoPath);
+            List<Opening>? ECO = JsonSerializer.Deserialize<List<Opening>>(jsonContent);
+            openings.Add(ECO);
+            Console.WriteLine(ECO[0].GetType().Name);
         }
-        string jsonContent = File.ReadAllText(openingsPath);
-        List<FenMove>? fenMoves = JsonSerializer.Deserialize<List<FenMove>>(jsonContent);
-        return fenMoves ?? new List<FenMove>();
+        return openings ?? new List<List<Opening>>();
+    }
+    public class Opening
+    {
+        public string Src { get; set; }       
+        public string Eco { get; set; }        
+        public string Moves { get; set; }      
+        public string Name { get; set; }       
+        public string Scid { get; set; }       
+        public Aliases Aliases { get; set; }   
+        public Opening(string src, string eco, string moves, string name, string scid, Aliases aliases)
+        {   
+            Src = src;
+            Eco = eco;
+            Moves = moves;
+            Name = name;
+            Scid = scid;
+            Aliases = aliases;
+        }
     }
 
-    public static void SaveFenMoveList(List<FenMove> fenMoves)
+    public class Aliases
     {
-        
-        string jsonContent = JsonSerializer.Serialize(fenMoves, new JsonSerializerOptions{WriteIndented=true});
-        File.WriteAllText(openingsPath,jsonContent);
+        public string Scid { get; set; }       // Alias SCID
+        public string EcoWikip { get; set; }   // Información adicional de ECO en Wikipedia
+
+        public Aliases(string scid, string ecoWikip)
+        {
+            Scid = scid;
+            EcoWikip = ecoWikip;
+        }
     }
 
     public class FenMove
