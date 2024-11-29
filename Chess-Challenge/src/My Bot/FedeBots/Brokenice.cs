@@ -13,7 +13,10 @@ public class Brokenice
     {
         return MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);        
     }
+    public Candidate IterativeDeepening(Board board, )
+    {
 
+    }
     public Candidate MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)
     {
         if (depth == 0 || GameIsFinished(board))
