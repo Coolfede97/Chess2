@@ -20,14 +20,11 @@ public class MyBot : IChessBot
         }
         Brokenice bot = new Brokenice(board.IsWhiteToMove);
         move = bot.Think(board,timer);
-        // if (!openingSaved && moveCount>=6 && GetNoisyMoves(board,board.IsWhiteToMove).Count==0) UpdateOpeningsDatabase(move, board);
-        // else if (!openingSaved) AddNewFenMove(board, move);
         
         return  move.movement;
     }
     public Candidate GetBookMove(Board board)
     {
-        // moveCount++;
         Move[] legalMoves = board.GetLegalMoves();
         List<Move> bookMoves= new List<Move>();
         foreach (Move legalMove in legalMoves)
