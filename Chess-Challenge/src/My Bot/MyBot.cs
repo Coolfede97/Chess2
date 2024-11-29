@@ -6,46 +6,48 @@ using static General.Gen;
 using static DatabaseManager;
 public class MyBot : IChessBot
 {
+    public bool openingFinished=false;
     public int moveCount=0;
-    public bool openingSaved=false;
-    public List<FenMove> openingHistory = new List<FenMove>();
+
+    public Random random = new Random();
     public Move Think(Board board, Timer timer)
     {
+        Candidate move;
+        if (!openingFinished)
+        {
+            move = GetBookMove(board);
+            if (move.movement!=Move.NullMove) return move.movement; 
+        }
         Brokenice bot = new Brokenice(board.IsWhiteToMove);
-        Candidate move = bot.Think(board,timer);
+        move = bot.Think(board,timer);
         // if (!openingSaved && moveCount>=6 && GetNoisyMoves(board,board.IsWhiteToMove).Count==0) UpdateOpeningsDatabase(move, board);
         // else if (!openingSaved) AddNewFenMove(board, move);
-        // moveCount++;
-        Console.WriteLine(board.GameMoveHistory);
+        
         return  move.movement;
     }
-
-    // public void UpdateOpeningsDatabase(Candidate move, Board board)
-    // {
-    //     openingSaved=true;
-    //     if (MaterialDifference(board.IsWhiteToMove, board, 0)<0) return;
-    //     List<FenMove> OpeningsList = LoadFenMoveList();
-    //     foreach (FenMove fenMove in openingHistory)
-    //     {
-    //         fenMove.MaterialWon=move.materialWon;
-            
-    //             FenMove? savedFenMove = OpeningsList.Find(x=>x.Fen==fenMove.Fen);
-    //             if (savedFenMove==null)
-    //             {
-    //                 OpeningsList.Add(fenMove);
-    //             }
-    //             else if (fenMove.MaterialWon>savedFenMove.MaterialWon)
-    //             {
-    //                 Console.WriteLine($"Se cambio del movimiento {savedFenMove.BestMove.ToString()} al movimiento {fenMove.BestMove} en el FEN: {fenMove.Fen}");
-    //                 savedFenMove.BestMove=fenMove.BestMove;
-    //                 savedFenMove.MaterialWon=fenMove.MaterialWon;
-    //             }
-    //     }
-    //     SaveFenMoveList(OpeningsList);
-    // }
-    // public void AddNewFenMove(Board board, Candidate move)
-    // {
-    //     FenMove newFenMove = new FenMove(board.GetFenString(),move.movement,move.materialWon);
-    //     openingHistory.Add(newFenMove);
-    // }
+    public Candidate GetBookMove(Board board)
+    {
+        // moveCount++;
+        Move[] legalMoves = board.GetLegalMoves();
+        List<Move> bookMoves= new List<Move>();
+        foreach (Move legalMove in legalMoves)
+        {
+            board.MakeMove(legalMove);
+            string fen = board.GetFenString();
+            if (openings.TryGetValue(fen,out var opening)) bookMoves.Add(legalMove);
+            board.UndoMove(legalMove);
+        }
+        if (bookMoves.Count<=0)
+        {
+            openingFinished=true;
+            string fen = board.GetFenString();
+            Console.WriteLine($"No se encontró este opening en la base de datos: {fen}");
+            return new Candidate(Move.NullMove,0);
+        }
+        else
+        {
+            int randomIndex = random.Next(0,bookMoves.Count);
+            return new Candidate(bookMoves[randomIndex],0);
+        }
+    }
 }

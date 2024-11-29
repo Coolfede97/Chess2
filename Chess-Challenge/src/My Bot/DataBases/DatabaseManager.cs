@@ -14,23 +14,34 @@ public static class DatabaseManager
         "src/My Bot/DataBases/ecoD.json",
         "src/My Bot/DataBases/ecoE.json"
     };
-    public static List<List<Opening>> openings = LoadECOS();
-    public static List<List<Opening>> LoadECOS()
+
+    public static Dictionary<string, Opening> openings;
+    public static Dictionary<string, Opening> LoadECOS()
+{
+    Dictionary<string, Opening> openings = new();
+    foreach (string ecoPath in ECOs)
     {
-        List<List<Opening>> openings = new List<List<Opening>>();
-        foreach (string ecoPath in ECOs)
+        if (!File.Exists(ecoPath))
         {
-            if (!File.Exists(ecoPath))
-            {
-                Console.WriteLine("No se encuentra el archivo Openings.json :(");
-            }
-            string jsonContent = File.ReadAllText(ecoPath);
-            List<Opening>? ECO = JsonSerializer.Deserialize<List<Opening>>(jsonContent);
-            openings.Add(ECO);
-            Console.WriteLine(ECO[0].GetType().Name);
+            Console.WriteLine($"No se encuentra el archivo: {ecoPath}");
+            continue;
         }
-        return openings ?? new List<List<Opening>>();
+
+        string jsonContent = File.ReadAllText(ecoPath);
+
+        // Cambiamos la deserialización a Dictionary<string, Opening>
+        var ECO = JsonSerializer.Deserialize<Dictionary<string, Opening>>(jsonContent);
+
+        if (ECO != null)
+        {
+            foreach (var entry in ECO)
+            {
+                openings[entry.Key] = entry.Value; // Combina las aperturas
+            }
+        }
     }
+    return openings;
+}
     public class Opening
     {
         public string Src { get; set; }       

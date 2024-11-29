@@ -2,7 +2,7 @@
 using System.IO;
 using System.Numerics;
 using System.Runtime.InteropServices;
-
+using static DatabaseManager;
 namespace ChessChallenge.Application
 {
     static class Program
@@ -12,6 +12,9 @@ namespace ChessChallenge.Application
 
         public static void Main()
         {
+            // COSAS DE FEDE ----------------------------------------------------------------------
+            openings = LoadECOS();
+            // COSAS DE FEDE ----------------------------------------------------------------------
             Vector2 loadedWindowSize = GetSavedWindowSize();
             int screenWidth = (int)loadedWindowSize.X;
             int screenHeight = (int)loadedWindowSize.Y;
