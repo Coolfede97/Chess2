@@ -7,7 +7,7 @@ public class Brokenice
 {
     public bool isWhite;
     public Random random = new Random();
-    public int depth = 2;
+    public int depth = 4;
     public int extraDepth = 2;
     public Candidate Think(Board board, Timer timer)
     {
