@@ -18,7 +18,7 @@ public class MyBot : IChessBot
             move = GetBookMove(board);
             if (move.movement!=Move.NullMove) return move.movement; 
         }
-        Brokenice bot = new Brokenice(board.IsWhiteToMove);
+        Test bot = new Test(board.IsWhiteToMove);
         move = bot.Think(board,timer);
         // if (!openingSaved && moveCount>=6 && GetNoisyMoves(board,board.IsWhiteToMove).Count==0) UpdateOpeningsDatabase(move, board);
         // else if (!openingSaved) AddNewFenMove(board, move);

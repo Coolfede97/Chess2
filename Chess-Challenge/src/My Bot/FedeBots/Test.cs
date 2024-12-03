@@ -8,11 +8,10 @@ public class Test
 {
     public bool isWhite;
     public Random random = new Random();
-    public int depth = 1;
+    public int depth = 4;
     public int extraDepth = 2;
     public Candidate Think(Board board, Timer timer)
     {
-
         return MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);        
     }
 
@@ -113,19 +112,6 @@ public class Test
             return lastCandidate;
         }
     }
-    
-    // public Candidate BookMove(Board board)
-    // {
-    //     Move[] legalMoves = board.GetLegalMoves();
-    //     foreach (Move legalMove in legalMoves)
-    //     {
-    //         board.MakeMove(legalMove);
-    //         foreach (List<Opening> openingList in openings)
-    //         {
-    //             if (openingList[0])
-    //         }
-    //     }
-    // }
     public Test(bool isWhiteP)
     {
         isWhite=isWhiteP;

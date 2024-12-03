@@ -12,7 +12,7 @@ namespace ChessChallenge.Example
     
         public Move Think(Board board, Timer timer)
         {
-            Brokenice bot = new Brokenice(board.IsWhiteToMove);
+            Richard bot = new Richard(board.IsWhiteToMove);
             Candidate move = bot.Think(board,timer);
             return  move.movement;   
         }
