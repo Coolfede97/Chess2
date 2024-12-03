@@ -81,8 +81,11 @@ public class Test
 
     public List<Candidate> QuiesceneSearch(Board board,int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)
     {
-        List<Move> noisyMoves = GetNoisyMoves(board, isWhite);
-        if (noisyMoves.Count>0 && depth>0)
+        string fen = board.GetFenString();
+        Move[]? noisyMoves = GetAnalizedFenMoves(fen,isMaximizing);
+        if (noisyMoves==null) noisyMoves=GetNoisyMoves(board, isWhite).ToArray();
+        else noisyMoves=FilterNoisyMoves(board,isWhite,noisyMoves.ToList()).ToArray();
+        if (noisyMoves.Length>0 && depth>0)
         {
             List<Candidate> bestCandidates = new List<Candidate>();
             foreach (Move legalMove in noisyMoves)
@@ -121,6 +124,9 @@ public class Test
                     break;
                 }
             }
+            if (isMaximizing) bestCandidates = SortByMaterialDescending(bestCandidates);
+            else bestCandidates = SortByMaterialAscending(bestCandidates);
+            UpdateFensAnalized(fen,bestCandidates,isMaximizing);
             return bestCandidates;
         }
         else

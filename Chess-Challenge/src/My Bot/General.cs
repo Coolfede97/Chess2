@@ -163,13 +163,28 @@ namespace General
                 else
                 {
                     board.MakeMove(legalMove);
-                    if (isWhite!=board.IsWhiteToMove && board.IsInCheck()) noisyMoves.Add(legalMove);
+                    if (isWhite!=board.IsWhiteToMove && (board.IsInCheck() || board.IsInCheckmate())) noisyMoves.Add(legalMove);
                     board.UndoMove(legalMove);
                 }
             }
             return noisyMoves;
         }
 
+        public static List<Move> FilterNoisyMoves(Board board, bool isWhite, List<Move> moves)
+        {
+            List<Move> noisyMoves = new List<Move>();
+            foreach (Move legalMove in moves)
+            {
+                if (legalMove.IsCapture || legalMove.IsPromotion) noisyMoves.Add(legalMove);
+                else
+                {
+                    board.MakeMove(legalMove);
+                    if (isWhite!=board.IsWhiteToMove && (board.IsInCheck() || board.IsInCheckmate())) noisyMoves.Add(legalMove);
+                    board.UndoMove(legalMove);
+                }
+            }
+            return noisyMoves;
+        }
         // 0 = Early    1 Mid      2 End
         public static int DeterminateGamePhase(Board board)
         {
