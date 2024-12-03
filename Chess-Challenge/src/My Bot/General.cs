@@ -204,6 +204,27 @@ namespace General
                 }
             ).ToArray();
         }
+
+        public static Move[] CandidatesToArray(List<Candidate> candidates)
+        {
+            List<Move> moveList = new List<Move>();
+            foreach (Candidate candidate in candidates)
+            {
+                moveList.Add(candidate.movement);
+            }
+            Move[] moveArray = moveList.ToArray();
+            return moveArray;
+        }
+       
+        public static List<Candidate> SortByMaterialDescending(List<Candidate> candidates)
+        {
+            return candidates.OrderByDescending(c => c.materialWon).ToList();
+        }   
+
+        public static List<Candidate> SortByMaterialAscending(List<Candidate> candidates)
+        {
+            return candidates.OrderBy(c => c.materialWon).ToList();
+        }
         public static bool GameIsFinished(Board board)
         {
             if (board.IsInCheckmate() || board.IsInStalemate() || board.IsInsufficientMaterial() || board.IsFiftyMoveDraw())

@@ -10,6 +10,9 @@ public class Test
     public Random random = new Random();
     public int depth = 4;
     public int extraDepth = 2;
+    public Dictionary<string, Move[]> maximizingFensAnalized = new Dictionary<string, Move[]>();
+    public Dictionary<string, Move[]> minimizingFensAnalized = new Dictionary<string, Move[]>();
+
     public Candidate Think(Board board, Timer timer)
     {
         return MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue)[0];        
@@ -22,8 +25,13 @@ public class Test
             return QuiesceneSearch(board,extraDepth, isMaximizing,lastCandidate, alpha, beta);
         }
         List<Candidate> bestCandidates = new List<Candidate>();
-        Move[] legalMoves = board.GetLegalMoves();
-        legalMoves = OrderMoves(legalMoves,board);
+        string fen = board.GetFenString();
+        Move[]? legalMoves = GetAnalizedFenMoves(fen,isMaximizing);
+        if (legalMoves==null)
+        {
+            legalMoves = board.GetLegalMoves();
+            legalMoves = OrderMoves(legalMoves,board);
+        }
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
@@ -65,6 +73,9 @@ public class Test
                 break;
             }
         }
+        if (isMaximizing) bestCandidates = SortByMaterialDescending(bestCandidates);
+        else bestCandidates = SortByMaterialAscending(bestCandidates);
+        UpdateFensAnalized(fen,bestCandidates,isMaximizing);
         return bestCandidates;
     }
 
@@ -121,6 +132,39 @@ public class Test
             List<Candidate> localList = new List<Candidate>();
             localList.Add(lastCandidate);
             return localList;
+        }
+    }
+    
+    public Move[]? GetAnalizedFenMoves(string fen, bool isMaximizing)
+    {
+        if (isMaximizing)
+        {
+            if (maximizingFensAnalized.TryGetValue(fen, out var moves))
+            {
+                return moves;
+            }   
+        }
+        else
+        {
+            if (minimizingFensAnalized.TryGetValue(fen, out var moves))
+            {
+                return moves;
+            }
+        }
+        return null;
+    }
+    
+    public void UpdateFensAnalized(string fen, List<Candidate> candidates, bool isMaximizing)
+    {
+        if (isMaximizing)
+        {
+            if (maximizingFensAnalized.ContainsKey(fen)) maximizingFensAnalized[fen] = CandidatesToArray(candidates);
+            else maximizingFensAnalized.Add(fen,CandidatesToArray(candidates));
+        }
+        else
+        {
+            if (minimizingFensAnalized.ContainsKey(fen)) minimizingFensAnalized[fen] = CandidatesToArray(candidates);
+            else minimizingFensAnalized.Add(fen,CandidatesToArray(candidates));
         }
     }
     public Test(bool isWhiteP)
