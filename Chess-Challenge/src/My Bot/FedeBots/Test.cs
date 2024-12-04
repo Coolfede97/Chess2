@@ -21,12 +21,11 @@ public class Test
 
     public Candidate IterativeDeepening(Board board)
     {
-        List<Candidate> bestCandidates = new List<Candidate>();
         for (int depth = initialDepth; depth<=maxDepth; depth++)
         {
-            bestCandidates = MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);
+            MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);
         }
-        return bestCandidates[0];
+        return new Candidate(maximizingFensAnalized[board.GetFenString()][0],0);
     }
     public List<Candidate> MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)
     {
@@ -42,18 +41,32 @@ public class Test
             legalMoves = board.GetLegalMoves();
             legalMoves = OrderMoves(legalMoves,board);
         }
+        else
+        {
+            // Console.WriteLine($"MovesAnalized: {legalMoves.Length}");
+            // Console.WriteLine(board.GetLegalMoves().Length);
+        }
+        // Console.WriteLine(legalMoves.Length + "DD");
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
             Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta)[0];
-            if (bestCandidates.Count==0) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
+            bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
             if (isMaximizing) alpha = Math.Max(alpha, candidate.materialWon);
             else beta = Math.Min(beta,candidate.materialWon);
-            bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
             board.UndoMove(legalMove);
             if (beta<alpha)
             {
+                foreach (Move legalMove2 in legalMoves)
+                {
+                    bool found = false;
+                    foreach (Candidate candidate2 in bestCandidates)
+                    {
+                        if (candidate2.movement==legalMove2) found = true;
+                    }
+                    if (!found) bestCandidates.Add(new Candidate(legalMove2,isMaximizing?int.MinValue:int.MaxValue));
+                }
                 break;
             }
         }
@@ -67,9 +80,11 @@ public class Test
     {
         string fen = board.GetFenString();
         Move[]? noisyMoves = GetAnalizedFenMoves(fen,isMaximizing);
-        if (noisyMoves==null) noisyMoves=GetNoisyMoves(board, isWhite).ToArray();
+        // if (noisyMoves==null) noisyMoves=GetNoisyMoves(board, isWhite).ToArray();
+        if (noisyMoves==null) noisyMoves=null;
         else noisyMoves=FilterNoisyMoves(board,isWhite,noisyMoves.ToList()).ToArray();
-        if (noisyMoves.Length>0 && depth>0)
+        // Console.WriteLine(noisyMoves.Length + "  dad");
+        if (noisyMoves!=null && noisyMoves.Length>0 && depth>0 && !GameIsFinished(board))
         {
             List<Candidate> bestCandidates = new List<Candidate>();
             foreach (Move legalMove in noisyMoves)
@@ -77,14 +92,22 @@ public class Test
                 board.MakeMove(legalMove);
                 Candidate newCandidate = new Candidate(legalMove,0);
                 Candidate candidate = QuiesceneSearch(board, depth-1, !isMaximizing, newCandidate, alpha, beta)[0];
-                if (bestCandidates.Count==0) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
+                bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
                 if (isMaximizing) alpha = Math.Max(alpha, candidate.materialWon);
                 else beta = Math.Min(beta,candidate.materialWon);
-                bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
                  
                 board.UndoMove(legalMove);
                 if (beta<alpha)
                 {
+                    foreach (Move legalMove2 in noisyMoves)
+                {
+                    bool found = false;
+                    foreach (Candidate candidate2 in bestCandidates)
+                    {
+                        if (candidate2.movement==legalMove2) found = true;
+                    }
+                    if (!found) bestCandidates.Add(new Candidate(legalMove2,isMaximizing?int.MinValue:int.MaxValue));
+                }
                     break;
                 }
             }
@@ -109,17 +132,11 @@ public class Test
     {
         if (isMaximizing)
         {
-            if (maximizingFensAnalized.TryGetValue(fen, out var moves))
-            {
-                return moves;
-            }   
+            if (maximizingFensAnalized.ContainsKey(fen)) return maximizingFensAnalized[fen];
         }
         else
         {
-            if (minimizingFensAnalized.TryGetValue(fen, out var moves))
-            {
-                return moves;
-            }
+            if (minimizingFensAnalized.ContainsKey(fen)) return minimizingFensAnalized[fen];
         }
         return null;
     }

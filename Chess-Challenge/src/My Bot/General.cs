@@ -167,6 +167,7 @@ namespace General
                     board.UndoMove(legalMove);
                 }
             }
+            // if (noisyMoves.Count>0) Console.WriteLine(noisyMoves.Count);
             return noisyMoves;
         }
 
