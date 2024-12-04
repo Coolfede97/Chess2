@@ -8,16 +8,26 @@ public class Test
 {
     public bool isWhite;
     public Random random = new Random();
-    public int depth = 4;
+    public int initialDepth=2;
+    public int maxDepth=4;
     public int extraDepth = 2;
     public Dictionary<string, Move[]> maximizingFensAnalized = new Dictionary<string, Move[]>();
     public Dictionary<string, Move[]> minimizingFensAnalized = new Dictionary<string, Move[]>();
 
     public Candidate Think(Board board, Timer timer)
     {
-        return MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue)[0];        
+        return IterativeDeepening(board);
     }
 
+    public Candidate IterativeDeepening(Board board)
+    {
+        List<Candidate> bestCandidates = new List<Candidate>();
+        for (int depth = initialDepth; depth<=maxDepth; depth++)
+        {
+            bestCandidates = MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);
+        }
+        return bestCandidates[0];
+    }
     public List<Candidate> MiniMax(Board board, int depth, bool isMaximizing, Candidate lastCandidate, int alpha, int beta)
     {
         if (depth == 0 || GameIsFinished(board))
@@ -35,38 +45,12 @@ public class Test
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
-            // if (board.IsRepeatedPosition())
-            // {
-            //     board.UndoMove(legalMove);
-            //     continue;
-            // }
             Candidate newCandidate = new Candidate(legalMove,0);
             Candidate candidate = MiniMax(board, depth-1, !isMaximizing, newCandidate, alpha, beta)[0];
             if (bestCandidates.Count==0) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-            if (isMaximizing)
-            {
-                if (candidate.materialWon>bestCandidates[0].materialWon)
-                {
-                    bestCandidates.Insert(0,new Candidate(legalMove, candidate.materialWon));
-                }
-                else
-                {
-                    bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
-                }
-                alpha = Math.Max(alpha, candidate.materialWon);
-            }
-            else
-            {
-                if (candidate.materialWon<bestCandidates[0].materialWon)
-                {
-                    bestCandidates.Insert(0,new Candidate(legalMove, candidate.materialWon));
-                }
-                else
-                {
-                    bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
-                }
-                beta = Math.Min(beta,candidate.materialWon);
-            }
+            if (isMaximizing) alpha = Math.Max(alpha, candidate.materialWon);
+            else beta = Math.Min(beta,candidate.materialWon);
+            bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
             board.UndoMove(legalMove);
             if (beta<alpha)
             {
@@ -94,30 +78,10 @@ public class Test
                 Candidate newCandidate = new Candidate(legalMove,0);
                 Candidate candidate = QuiesceneSearch(board, depth-1, !isMaximizing, newCandidate, alpha, beta)[0];
                 if (bestCandidates.Count==0) bestCandidates.Add(new Candidate(legalMove,candidate.materialWon));
-                if (isMaximizing)
-                {
-                    if (candidate.materialWon>bestCandidates[0].materialWon)
-                    {
-                        bestCandidates.Insert(0,new Candidate(legalMove, candidate.materialWon));
-                    }
-                    else
-                    {
-                        bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
-                    }
-                    alpha = Math.Max(alpha, candidate.materialWon);
-                }
-                else
-                {
-                    if (candidate.materialWon<bestCandidates[0].materialWon)
-                    {
-                        bestCandidates.Insert(0,new Candidate(legalMove, candidate.materialWon));
-                    }
-                    else
-                    {
-                        bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
-                    }
-                    beta = Math.Min(beta,candidate.materialWon);
-                }
+                if (isMaximizing) alpha = Math.Max(alpha, candidate.materialWon);
+                else beta = Math.Min(beta,candidate.materialWon);
+                bestCandidates.Add(new Candidate(legalMove, candidate.materialWon));
+                 
                 board.UndoMove(legalMove);
                 if (beta<alpha)
                 {
