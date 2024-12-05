@@ -10,7 +10,7 @@ public class Test
     public Random random = new Random();
     public int initialDepth=2;
     public int maxDepth=4;
-    public int extraDepth = 2;
+    public int extraDepth = 0;
     public Dictionary<string, Move[]> maximizingFensAnalized = new Dictionary<string, Move[]>();
     public Dictionary<string, Move[]> minimizingFensAnalized = new Dictionary<string, Move[]>();
 

@@ -8,7 +8,7 @@ public class Brokenice
     public bool isWhite;
     public Random random = new Random();
     public int depth = 4;
-    public int extraDepth = 2;
+    public int extraDepth = 0;
     public Candidate Think(Board board, Timer timer)
     {
         return MiniMax(board, depth, true, new Candidate(Move.NullMove,int.MinValue), int.MinValue, int .MaxValue);        
