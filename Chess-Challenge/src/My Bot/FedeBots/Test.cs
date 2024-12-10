@@ -10,7 +10,7 @@ public class Test
     public Random random = new Random();
     public int initialDepth=2;
     public int maxDepth=4;
-    public int extraDepth = 0;
+    public int extraDepth = 4;
     public Dictionary<string, Move[]> maximizingFensAnalized = new Dictionary<string, Move[]>();
     public Dictionary<string, Move[]> minimizingFensAnalized = new Dictionary<string, Move[]>();
 
@@ -35,18 +35,27 @@ public class Test
         }
         List<Candidate> bestCandidates = new List<Candidate>();
         string fen = board.GetFenString();
+        Move[] allLegalMoves = board.GetLegalMoves();
         Move[]? legalMoves = GetAnalizedFenMoves(fen,isMaximizing);
         if (legalMoves==null)
         {
-            legalMoves = board.GetLegalMoves();
-            legalMoves = OrderMoves(legalMoves,board);
+            legalMoves = OrderMoves(allLegalMoves,board);
         }
         else
         {
-            // Console.WriteLine($"MovesAnalized: {legalMoves.Length}");
-            // Console.WriteLine(board.GetLegalMoves().Length);
+            List<Move> localMoves = new List<Move>(legalMoves);
+            foreach (Move legalMove in allLegalMoves)
+            {
+                bool found = false;
+                foreach (Move analizedMove in legalMoves)
+                {
+                    if (analizedMove==legalMove) found=true;
+                }
+                if (!found) localMoves.Add(legalMove);
+            }    
+            legalMoves=localMoves.ToArray();
         }
-        // Console.WriteLine(legalMoves.Length + "DD");
+        
         foreach (Move legalMove in legalMoves)
         {
             board.MakeMove(legalMove);
@@ -80,8 +89,8 @@ public class Test
     {
         string fen = board.GetFenString();
         Move[]? noisyMoves = GetAnalizedFenMoves(fen,isMaximizing);
-        // if (noisyMoves==null) noisyMoves=GetNoisyMoves(board, isWhite).ToArray();
-        if (noisyMoves==null) noisyMoves=null;
+        if (noisyMoves==null) noisyMoves=GetNoisyMoves(board, isWhite).ToArray();
+        // if (noisyMoves==null) noisyMoves=null;
         else noisyMoves=FilterNoisyMoves(board,isWhite,noisyMoves.ToList()).ToArray();
         // Console.WriteLine(noisyMoves.Length + "  dad");
         if (noisyMoves!=null && noisyMoves.Length>0 && depth>0 && !GameIsFinished(board))
@@ -100,14 +109,14 @@ public class Test
                 if (beta<alpha)
                 {
                     foreach (Move legalMove2 in noisyMoves)
-                {
-                    bool found = false;
-                    foreach (Candidate candidate2 in bestCandidates)
                     {
-                        if (candidate2.movement==legalMove2) found = true;
+                        bool found = false;
+                        foreach (Candidate candidate2 in bestCandidates)
+                        {
+                            if (candidate2.movement==legalMove2) found = true;
+                        }
+                        if (!found) bestCandidates.Add(new Candidate(legalMove2,isMaximizing?int.MinValue:int.MaxValue));
                     }
-                    if (!found) bestCandidates.Add(new Candidate(legalMove2,isMaximizing?int.MinValue:int.MaxValue));
-                }
                     break;
                 }
             }
